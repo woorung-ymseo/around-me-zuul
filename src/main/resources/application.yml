@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: around-me-zuul
+
+server:
+  port: 8765
+
+# zuul
+zuul:
+  ignored-services: '*'
+  ribbon-isolation-strategy: thread # default : semaphore
+  thread-pool:
+    use-separate-thread-pools: true
+    thread-pool-key-prefix: zuul-
+  routes:
+    around-me-user:
+      path: '/user/api/v1/**'
+      serviceId: around-me-user
+      stripPrefix: false # service Id prefix 여부
+
+eureka:
+  instance:
+    non-secure-port: ${server.port}
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000
+    arond-me-user:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+  threadpool:
+    zuul-around-me-user:
+      coreSize: 30
+      maximumSize: 100
+      allowMaximumSizeToDivergeFromCoreSize: true
+
+around-me-user:
+  ribbon:
+    MaxAutoRetriesNextServer: 1
+    ReadTimeout: 3000
+    ConnectTimeout: 1000
+    MaxTotalConnections: 300
+    MaxConnectionsPerHost: 100
+
+
+
+
