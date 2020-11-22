@@ -13,6 +13,10 @@ zuul:
     use-separate-thread-pools: true
     thread-pool-key-prefix: zuul-
   routes:
+    around-me-common:
+      path: '/common/api/v1/**'
+      serviceId: around-me-user
+      stripPrefix: false # service Id prefix 여부
     around-me-user:
       path: '/user/api/v1/**'
       serviceId: around-me-user
