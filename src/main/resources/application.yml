@@ -15,11 +15,15 @@ zuul:
   routes:
     around-me-common:
       path: '/common/api/v1/**'
-      serviceId: around-me-user
+      serviceId: around-me-common
       stripPrefix: false # service Id prefix 여부
     around-me-user:
       path: '/user/api/v1/**'
       serviceId: around-me-user
+      stripPrefix: false # service Id prefix 여부
+    around-me-store:
+      path: '/store/api/v1/**'
+      serviceId: around-me-store
       stripPrefix: false # service Id prefix 여부
 
 eureka:
